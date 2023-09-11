@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.concurrent.locks.StampedLock;
 
 
@@ -30,8 +31,7 @@ public class DefaultDataAccessRegistry implements DataAccessRegistry{
     }
 
     @Override
-    public DataStore loadDataStore(String name, String propertiesURI) {
-        addProperties(name, propertiesURI);
+    public DataStore loadDataStore(String name, Map<String,Object> properties) {
         long stamp = lock.readLock();
         try {
             PropertiesWatcher propertiesWatcher = propertiesCache.get(name);
@@ -40,7 +40,7 @@ public class DefaultDataAccessRegistry implements DataAccessRegistry{
                 stamp = toWriteLock(stamp);
                 if (dataStore == null || propertiesWatcher.isModified()) {
                     try {
-                        dataStore = DataStoreFinder.getDataStore(propertiesWatcher.readAsMap());
+                        dataStore = DataStoreFinder.getDataStore(properties);
                         storeCache.put(name, dataStore);
                     } catch (IOException e) {
                         String message =
@@ -52,22 +52,6 @@ public class DefaultDataAccessRegistry implements DataAccessRegistry{
                 }
             }
             return dataStore;
-        } finally {
-            lock.unlock(stamp);
-        }
-    }
-
-    private void addProperties(String name, String fileURI) {
-        long stamp = lock.readLock();
-        try {
-            if (!propertiesCache.containsKey(name)) {
-                stamp = toWriteLock(stamp);
-                if (!propertiesCache.containsKey(name)) {
-                    File file = new File(Path.of(fileURI).toUri());
-                    PropertiesWatcher propertiesWatcher = new PropertiesWatcher(file);
-                    propertiesCache.put(name, propertiesWatcher);
-                }
-            }
         } finally {
             lock.unlock(stamp);
         }

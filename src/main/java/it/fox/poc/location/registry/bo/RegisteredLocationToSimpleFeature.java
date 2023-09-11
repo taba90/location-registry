@@ -12,10 +12,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,11 @@ import java.util.List;
 @Component
 public class RegisteredLocationToSimpleFeature {
 
+    @Value("data.access.jsonSchema")
+    String jsonSchema;
+
     public SimpleFeatureCollection convert(List<RegisteredLocation> locationList) throws URISyntaxException, IOException {
-        SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new File(getClass().getResource("json-schema.json").getFile()).toURL().toURI(),"gt").readType();
+        SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new URI(jsonSchema),"gt").readType();
         SimpleFeatureBuilder builder=new SimpleFeatureBuilder(simpleFeatureType);
         GeometryFactory geometryFactory=new GeometryFactory();
         List<SimpleFeature> features=new ArrayList<>();
