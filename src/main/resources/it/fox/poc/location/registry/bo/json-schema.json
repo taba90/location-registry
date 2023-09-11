@@ -1,0 +1,26 @@
+{
+  "name": "registered_location",
+  "types": [
+    {
+      "attribute": "id",
+      "type": "Long",
+      "primaryKey": true
+    },
+    {
+      "attribute": "location",
+      "type": "Point"
+    },
+    {
+      "attribute": "workplaceLat",
+      "type": "Double"
+    },
+    {
+      "attribute": "workplaceLong",
+      "type": "Double"
+    },
+    {
+      "attribute": "distance",
+      "type": "Double"
+    }
+  ]
+}
