@@ -5,6 +5,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.immudb.GeoJSONToFeatureType;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class SimpleFeatureDAOImpl implements SimpleFeatureDAO {
@@ -41,6 +44,8 @@ public class SimpleFeatureDAOImpl implements SimpleFeatureDAO {
     @Qualifier(DataAccessConfiguration.DATA_ACCESS_CONF_NAME)
     Map<String,Object> configurationProperties;
 
+    private static final Logger LOGGER=Logging.getLogger(SimpleFeatureDAOImpl.class);
+
     @Override
     public void save(SimpleFeatureCollection simpleFeatureCollection) throws IOException {
         DataStore dataStore=dataAccessRegistry.loadDataStore(dataAccessName,getConfigurationProperties());
@@ -50,10 +55,14 @@ public class SimpleFeatureDAOImpl implements SimpleFeatureDAO {
 
     @PostConstruct
     public void createFeatureType() throws IOException, URISyntaxException {
-        DataStore dataStore=dataAccessRegistry.loadDataStore(dataAccessName,getConfigurationProperties());
-        if (dataStore!=null && !Arrays.stream(dataStore.getTypeNames()).anyMatch(t->t!=null && t.equals(featureTypeName))){
-            SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new URI(jsonSchema),ns).readType();
-            dataStore.createSchema(simpleFeatureType);
+        try {
+            DataStore dataStore = dataAccessRegistry.loadDataStore(dataAccessName, getConfigurationProperties());
+            if (dataStore != null && !Arrays.stream(dataStore.getTypeNames()).anyMatch(t -> t != null && t.equals(featureTypeName))) {
+                SimpleFeatureType simpleFeatureType = new GeoJSONToFeatureType(new URI(jsonSchema), ns).readType();
+                dataStore.createSchema(simpleFeatureType);
+            }
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE,"Error",e);
         }
 
     }
