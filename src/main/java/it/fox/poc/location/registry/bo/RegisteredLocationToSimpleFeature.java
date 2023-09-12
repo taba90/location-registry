@@ -24,10 +24,10 @@ import java.util.List;
 @Component
 public class RegisteredLocationToSimpleFeature {
 
-    @Value("data.access.jsonSchema")
+    @Value("${data.access.jsonSchema}")
     String jsonSchema;
 
-    @Value("data.access.namespace")
+    @Value("${data.access.namespace}")
     String ns;
 
     public SimpleFeatureCollection convert(List<RegisteredLocation> locationList) throws URISyntaxException, IOException {
