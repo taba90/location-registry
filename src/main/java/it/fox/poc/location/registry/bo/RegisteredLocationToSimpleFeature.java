@@ -27,8 +27,11 @@ public class RegisteredLocationToSimpleFeature {
     @Value("data.access.jsonSchema")
     String jsonSchema;
 
+    @Value("data.access.namespace")
+    String ns;
+
     public SimpleFeatureCollection convert(List<RegisteredLocation> locationList) throws URISyntaxException, IOException {
-        SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new URI(jsonSchema),"gt").readType();
+        SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new URI(jsonSchema),ns).readType();
         SimpleFeatureBuilder builder=new SimpleFeatureBuilder(simpleFeatureType);
         GeometryFactory geometryFactory=new GeometryFactory();
         List<SimpleFeature> features=new ArrayList<>();

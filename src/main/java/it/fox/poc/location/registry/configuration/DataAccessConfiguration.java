@@ -10,10 +10,10 @@ import java.util.Map;
 @Configuration
 public class DataAccessConfiguration {
 
-    @Value("data.access.name")
+    @Value("${data.access.name}")
     String dataAccessName;
 
-    @Value("data.access.database")
+    @Value("${data.access.database}")
     String database;
 
     @Value("${data.access.host}")

@@ -6,8 +6,10 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.util.SoftValueHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,6 +19,7 @@ import java.util.concurrent.locks.StampedLock;
 
 @Component
 public class DefaultDataAccessRegistry implements DataAccessRegistry{
+
     private SoftValueHashMap<String, DataStore> storeCache;
 
     private SoftValueHashMap<String, PropertiesWatcher> propertiesCache;
