@@ -37,11 +37,10 @@ public class DefaultDataAccessRegistry implements DataAccessRegistry{
     public DataStore loadDataStore(String name, Map<String,Object> properties) {
         long stamp = lock.readLock();
         try {
-            PropertiesWatcher propertiesWatcher = propertiesCache.get(name);
             DataStore dataStore = storeCache.get(name);
-            if (dataStore == null || propertiesWatcher.isModified()) {
+            if (dataStore == null) {
                 stamp = toWriteLock(stamp);
-                if (dataStore == null || propertiesWatcher.isModified()) {
+                if (dataStore == null) {
                     try {
                         dataStore = DataStoreFinder.getDataStore(properties);
                         storeCache.put(name, dataStore);
