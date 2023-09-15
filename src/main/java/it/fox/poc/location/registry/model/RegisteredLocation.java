@@ -12,6 +12,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RegisteredLocation {
@@ -27,6 +28,10 @@ public class RegisteredLocation {
     private Double workPlaceLon;
 
     private Double distance;
+
+    private Date regTimestamp;
+
+    private String deviceId;
 
 
     public Long getId() {
@@ -75,6 +80,22 @@ public class RegisteredLocation {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public Date getRegTimestamp() {
+        return regTimestamp;
+    }
+
+    public void setRegTimestamp(Date regTimestamp) {
+        this.regTimestamp = regTimestamp;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public SimpleFeatureCollection toSimpleFeatures(SimpleFeatureType simpleFeatureType){

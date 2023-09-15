@@ -27,7 +27,7 @@
       "type": "String"
     },
     {
-      "attribute": "reg_timestamp",
+      "attribute": "regTimestamp",
       "type": "Date"
     }
   ]

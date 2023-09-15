@@ -50,6 +50,10 @@ public class RegisteredLocationToSimpleFeature {
                 builder.add(regLoc.getWorkPlaceLon());
             else if (lName.equalsIgnoreCase("workplaceLat"))
                 builder.add(regLoc.getWorkPlaceLat());
+            else if (lName.equalsIgnoreCase("regTimestamp"))
+                builder.add(regLoc.getRegTimestamp());
+            else if (lName.equalsIgnoreCase("deviceId"))
+                builder.add(regLoc.getDeviceId());
             else if (ad instanceof GeometryDescriptor) {
                 Point location=factory.createPoint(new Coordinate(regLoc.getLongitude(),regLoc.getLatitude()));
                 builder.add(location);
