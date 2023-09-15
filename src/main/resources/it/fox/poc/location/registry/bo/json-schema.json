@@ -21,6 +21,14 @@
     {
       "attribute": "distance",
       "type": "Double"
+    },
+    {
+      "attribute": "deviceId",
+      "type": "String"
+    },
+    {
+      "attribute": "reg_timestamp",
+      "type": "Date"
     }
   ]
 }
