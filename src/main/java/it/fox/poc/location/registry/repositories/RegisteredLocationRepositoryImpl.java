@@ -19,10 +19,11 @@ public class RegisteredLocationRepositoryImpl implements RegisteredLocationRepos
     @Autowired
     RegisteredLocationToSimpleFeature mapper;
     @Override
-    public void addLocations(List<RegisteredLocation> locationList) {
+    public void addLocations(String iv, String privateKey,List<RegisteredLocation> locationList) {
         if (locationList!=null && !locationList.isEmpty()) {
             try {
-                dao.save(mapper.convert(locationList));
+
+                dao.save(mapper.convert(iv,privateKey,locationList));
             } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
             }

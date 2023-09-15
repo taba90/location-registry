@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RegisteredLocationRepository {
 
-    void addLocations(List<RegisteredLocation> locationList);
+    void addLocations(String iv, String privateKey,List<RegisteredLocation> locationList);
 }

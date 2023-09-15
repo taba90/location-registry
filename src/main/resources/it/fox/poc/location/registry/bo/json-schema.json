@@ -1,5 +1,6 @@
 {
-  "name": "registered_location",
+  "name": "registered_location_2",
+  "encrypt": true,
   "types": [
     {
       "attribute": "id",

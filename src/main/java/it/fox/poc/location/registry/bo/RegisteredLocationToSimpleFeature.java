@@ -4,6 +4,7 @@ import it.fox.poc.location.registry.model.RegisteredLocation;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.immudb.EncryptListFeatureCollection;
 import org.geotools.immudb.GeoJSONToFeatureType;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -30,13 +31,13 @@ public class RegisteredLocationToSimpleFeature {
     @Value("${data.access.namespace}")
     String ns;
 
-    public SimpleFeatureCollection convert(List<RegisteredLocation> locationList) throws URISyntaxException, IOException {
+    public SimpleFeatureCollection convert(String iv, String privateKey,List<RegisteredLocation> locationList) throws URISyntaxException, IOException {
         SimpleFeatureType simpleFeatureType= new GeoJSONToFeatureType(new URI(jsonSchema),ns).readType();
         SimpleFeatureBuilder builder=new SimpleFeatureBuilder(simpleFeatureType);
         GeometryFactory geometryFactory=new GeometryFactory();
         List<SimpleFeature> features=new ArrayList<>();
         locationList.forEach(l->features.add(toSimpleFeature(l,simpleFeatureType,geometryFactory,builder)));
-        return new ListFeatureCollection(simpleFeatureType,features);
+        return new EncryptListFeatureCollection(privateKey,iv,simpleFeatureType,features);
     }
 
 
